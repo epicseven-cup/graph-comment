@@ -1,0 +1,41 @@
+# Do Lazy loading, Users should on be only seeing the replies when they click on see more option
+    # This need to be working around the resolver for graphql
+
+# The size of the return comments should be limited unless told otherwise
+
+
+type Query {
+    getWebsite(topicId: ID): Topic
+    getReplies(replyId: ID) [Comment]
+    getComment(commentId: ID) Comment
+}
+
+type Author {
+    userI: ID
+    username: String
+    userProfilePicture: String
+    description: String
+}
+
+type Comment {
+    commentId: ID
+    replyId: ID
+    author: Author
+    content: String
+    like: Int
+}
+
+type Website {
+    webisteId: ID
+    baseUrl: String
+    name: String
+    description: String
+}
+
+type Page {
+    pageId: ID
+    url: String
+    title: String
+    description: String
+    comments: [Comment]
+}
