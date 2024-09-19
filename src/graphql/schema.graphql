@@ -5,9 +5,14 @@
 
 
 type Query {
-    getWebsite(topicId: ID): Topic
-    getReplies(replyId: ID) [Comment]
-    getComment(commentId: ID) Comment
+    Ping(content: String): Pong
+    getWebsite(topicId: ID): Website
+    getReplies(replyId: ID) :[Comment]
+    getComment(commentId: ID) :Comment
+}
+
+type Pong {
+    content: String
 }
 
 type Author {
