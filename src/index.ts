@@ -4,15 +4,11 @@ import { buildSchema, GraphQLSchema} from "graphql";
 import { createHandler } from "graphql-http/lib/use/express";
 import winston from "winston";
 
-import Pong from "./resource/types/Pong";
+import { ruruHTML } from "ruru/server";
+import IPing from "./resource/types/Ping";
 
 const schemaFileContent: string = readFileSync("./src/graphql/schema.graphql", "utf-8");
 const schema: GraphQLSchema = buildSchema(schemaFileContent);
-const resolver: object = {
-    Ping(content: string) {
-        return new Pong(content);
-    },
-};
 
 const app: express.Express = express();
 
@@ -33,8 +29,14 @@ if (process.env.APP_ENV !== "production") {
     }));
 }
 
-app.use((req, res, next) => {
-    logger.info(`Received a ${req.method} request for ${req.url}. Current respond ${res.json}`);
+const resolver: object = {
+    Ping( req: IPing) {
+            return req.inputContent ;
+    },
+};
+
+app.use((req, _, next) => {
+    logger.info(`Received a ${req.method} request for ${req.url}.`);
     next();
 });
 
@@ -44,5 +46,11 @@ app.all(
         schema,
     }),
 );
+
+// Serve the GraphiQL IDE.
+app.get("/", (_, res) => {
+    res.type("html");
+    res.end(ruruHTML({ endpoint: "/graphql" }));
+});
 
 app.listen(4000);

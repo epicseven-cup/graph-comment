@@ -8,9 +8,19 @@ const fs_1 = require("fs");
 const graphql_1 = require("graphql");
 const express_2 = require("graphql-http/lib/use/express");
 const winston_1 = __importDefault(require("winston"));
-const server_1 = require("ruru/server");
+// import Pong from "./resource/types/Pong";
+class Pong {
+    constructor(content) {
+        this.content = content;
+    }
+}
 const schemaFileContent = (0, fs_1.readFileSync)("./src/graphql/schema.graphql", "utf-8");
 const schema = (0, graphql_1.buildSchema)(schemaFileContent);
+const resolver = {
+    Ping(content) {
+        return new Pong(content);
+    },
+};
 const app = (0, express_1.default)();
 const logger = winston_1.default.createLogger({
     defaultMeta: { service: "user-service" },
@@ -27,22 +37,12 @@ if (process.env.APP_ENV !== "production") {
         format: winston_1.default.format.simple(),
     }));
 }
-const resolver = {
-    Ping(req) {
-        return req.inputContent;
-    },
-};
-app.use((req, _, next) => {
-    logger.info(`Received a ${req.method} request for ${req.url}.`);
+app.use((req, res, next) => {
+    logger.info(`Received a ${req.method} request for ${req.url}. Current respond ${res.json}`);
     next();
 });
 app.all("/graphql", (0, express_2.createHandler)({
     rootValue: resolver,
     schema,
 }));
-// Serve the GraphiQL IDE.
-app.get("/", (_, res) => {
-    res.type("html");
-    res.end((0, server_1.ruruHTML)({ endpoint: "/graphql" }));
-});
 app.listen(4000);

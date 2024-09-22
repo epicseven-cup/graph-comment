@@ -1,9 +1,13 @@
 {
   "dependencies": {
     "express": "^4.21.0",
+    "graphiql": "^3.7.1",
     "graphql": "^16.9.0",
     "graphql-http": "^1.22.1",
     "mongodb": "6.9",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "ruru": "^2.0.0-beta.13",
     "winston": "^3.14.2"
   },
   "devDependencies": {
