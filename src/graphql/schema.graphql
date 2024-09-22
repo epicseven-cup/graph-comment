@@ -3,12 +3,11 @@
 
 # The size of the return comments should be limited unless told otherwise
 
-
 type Query {
     Ping(inputContent: String): String
-    getWebsite(topicId: ID): Website
-    getReplies(replyId: ID) :[Comment]
-    getComment(commentId: ID) :Comment
+    GetWebsite(websiteId: ID): Website
+    GetReplies(replyId: ID) :[Comment]
+    GetComment(commentId: ID) :Comment
 }
 
 type Author {
@@ -27,7 +26,7 @@ type Comment {
 }
 
 type Website {
-    webisteId: ID
+    websiteId: ID
     baseUrl: String
     name: String
     description: String

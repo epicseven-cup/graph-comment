@@ -31,6 +31,9 @@ const resolver = {
     Ping(req) {
         return req.inputContent;
     },
+    GetWebsite(req) {
+        return req;
+    },
 };
 app.use((req, _, next) => {
     logger.info(`Received a ${req.method} request for ${req.url}.`);
