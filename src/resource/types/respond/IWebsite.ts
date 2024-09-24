@@ -1,5 +1,5 @@
 export default interface IWebsite {
-    websiteid: string;
+    websiteId: string;
     baseUrl: string;
     name: string;
     description: string;

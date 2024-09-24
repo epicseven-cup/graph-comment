@@ -7,6 +7,7 @@ import { ruruHTML } from "ruru/server";
 import IGetWebsite from "./resource/types/request/IGetWebsite.js";
 import IPing from "./resource/types/request/IPing.js";
 
+import { searchWebsite } from "./database/index.js";
 import { logger } from "./winston/index.js";
 
 const schemaFileContent: string = readFileSync("./src/graphql/schema.graphql", "utf-8");
@@ -20,7 +21,7 @@ const resolver: object = {
     },
 
     GetWebsite( req: IGetWebsite ) {
-        return req;
+        return searchWebsite(req);
     },
 };
 

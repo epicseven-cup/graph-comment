@@ -1,11 +1,7 @@
 import winston from "winston";
-
-export const logger: winston.Logger = winston.createLogger({
-    defaultMeta: { service: "user-service"},
-    format: winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.json(),
-    ),
+export const logger = winston.createLogger({
+    defaultMeta: { service: "user-service" },
+    format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
     level: "info",
     transports: [
         new winston.transports.File({
@@ -13,7 +9,6 @@ export const logger: winston.Logger = winston.createLogger({
         }),
     ],
 });
-
 if (process.env.APP_ENV !== "production") {
     logger.add(new winston.transports.Console({
         format: winston.format.simple(),
