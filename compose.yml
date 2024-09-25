@@ -2,7 +2,7 @@ services:
   mongo:
     image: mongo
     restart: always
-    port:
+    ports:
       - "27017:27017"
   comment-api:
     build: .
