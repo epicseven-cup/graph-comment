@@ -1,5 +1,5 @@
 import winston from "winston";
-export const logger = winston.createLogger({
+export const applicationLogger = winston.createapplicationLogger({
     defaultMeta: { service: "user-service" },
     format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
     level: "info",
@@ -10,7 +10,7 @@ export const logger = winston.createLogger({
     ],
 });
 if (process.env.APP_ENV !== "production") {
-    logger.add(new winston.transports.Console({
+    applicationLogger.add(new winston.transports.Console({
         format: winston.format.simple(),
     }));
 }

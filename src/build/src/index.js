@@ -22,7 +22,7 @@ const resolver = {
     },
 };
 const app = (0, express_1.default)();
-const logger = winston_1.default.createLogger({
+const applicationLogger = winston_1.default.createapplicationLogger({
     defaultMeta: { service: "user-service" },
     format: winston_1.default.format.json(),
     level: "info",
@@ -33,12 +33,12 @@ const logger = winston_1.default.createLogger({
     ],
 });
 if (process.env.APP_ENV !== "production") {
-    logger.add(new winston_1.default.transports.Console({
+    applicationLogger.add(new winston_1.default.transports.Console({
         format: winston_1.default.format.simple(),
     }));
 }
 app.use((req, res, next) => {
-    logger.info(`Received a ${req.method} request for ${req.url}. Current respond ${res.json}`);
+    applicationLogger.info(`Received a ${req.method} request for ${req.url}. Current respond ${res.json}`);
     next();
 });
 app.all("/graphql", (0, express_2.createHandler)({

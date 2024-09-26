@@ -10,6 +10,11 @@ type Query {
     GetComment(commentId: ID) :Comment
 }
 
+
+type Mutation {
+    SetWebsite(website: WebsiteInputType): Website
+}
+
 type Author {
     userI: ID
     username: String
@@ -27,6 +32,12 @@ type Comment {
 
 type Website {
     websiteId: ID
+    baseUrl: String
+    name: String
+    description: String
+}
+
+input WebsiteInputType {
     baseUrl: String
     name: String
     description: String

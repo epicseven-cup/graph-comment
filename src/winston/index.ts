@@ -1,11 +1,14 @@
 import winston from "winston";
 
-export const logger: winston.Logger = winston.createLogger({
-    defaultMeta: { service: "user-service"},
-    format: winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.json(),
-        winston.format.cli(),
+const {combine, timestamp, label, prettyPrint, cli } = winston.format
+
+export const applicationLogger: winston.Logger= winston.createLogger({
+    defaultMeta: { service: "application-service"},
+    format: combine(
+        timestamp(),
+        label({label: "Express.js"}),
+        prettyPrint(),
+        cli(),
     ),
     level: "info",
     transports: [
@@ -15,8 +18,29 @@ export const logger: winston.Logger = winston.createLogger({
     ],
 });
 
+export const databaseLogger: winston.Logger = winston.createLogger({
+    defaultMeta: { service: "database-service" },
+    format: combine(
+        timestamp(),
+        label({label: 'Database'}),
+        prettyPrint(),
+        cli()
+    ),
+    level: "info",
+    transports: [
+        new winston.transports.File({
+            filename: "database-error.log", level: "error",
+        }),
+    ],
+
+});
+
 if (process.env.APP_ENV !== "production") {
-    logger.add(new winston.transports.Console({
+    applicationLogger.add(new winston.transports.Console({
+        format: winston.format.simple(),
+    }));
+
+   databaseLogger.add(new winston.transports.Console({
         format: winston.format.simple(),
     }));
 }

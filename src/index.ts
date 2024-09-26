@@ -7,8 +7,9 @@ import { ruruHTML } from "ruru/server";
 import IGetWebsite from "./resource/types/request/IGetWebsite.js";
 import IPing from "./resource/types/request/IPing.js";
 
-import { searchWebsite } from "./database/index.js";
-import { logger } from "./winston/index.js";
+import { searchWebsite, insertWebsite } from "./database/index.js";
+import { applicationLogger } from "./winston/index.js";
+import IWebsite from "./resource/types/respond/IWebsite.js";
 
 const schemaFileContent: string = readFileSync("./src/graphql/schema.graphql", "utf-8");
 const schema: GraphQLSchema = buildSchema(schemaFileContent);
@@ -23,10 +24,15 @@ const resolver: object = {
     GetWebsite( req: IGetWebsite ) {
         return searchWebsite(req);
     },
+
+    SetWebsite( req: IWebsite ) {
+        insertWebsite(req)
+        return req
+    }
 };
 
 app.use((req, _, next) => {
-    logger.info(`Received a ${req.method} request for ${req.url}.`);
+    applicationLogger.info(`Received a ${req.method} request for ${req.url}.`);
     next();
 });
 

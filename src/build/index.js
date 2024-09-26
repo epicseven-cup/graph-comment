@@ -4,7 +4,7 @@ import { buildSchema } from "graphql";
 import { createHandler } from "graphql-http/lib/use/express";
 import { ruruHTML } from "ruru/server";
 import { searchWebsite } from "./database/index.js";
-import { logger } from "./winston/index.js";
+import { applicationLogger } from "./winston/index.js";
 const schemaFileContent = readFileSync("./src/graphql/schema.graphql", "utf-8");
 const schema = buildSchema(schemaFileContent);
 const app = express();
@@ -17,7 +17,7 @@ const resolver = {
     },
 };
 app.use((req, _, next) => {
-    logger.info(`Received a ${req.method} request for ${req.url}.`);
+    applicationLogger.info(`Received a ${req.method} request for ${req.url}.`);
     next();
 });
 app.all("/graphql", createHandler({
